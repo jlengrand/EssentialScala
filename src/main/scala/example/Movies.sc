@@ -1,25 +1,14 @@
-println("Welcome to the Scala worksheet".toUpperCase)
-
-class Cat(val name : String, val color: String, val food: String){
-}
-
-val oswald = new Cat("Oswald", "Black", "Milk")
-val henderson = new Cat("Henderson", "Ginger", "Chips")
-val quentin = new Cat("Quentin", "Tabby and white", "Curry")
-
-oswald.color
-
-object ChipShop{
-  def willServe(cat : Cat): Boolean ={
-    return cat.food == "Chips"
-  }
-}
-
-ChipShop.willServe(henderson)
-ChipShop.willServe(oswald)
-
 class Director(val firstName : String, val lastName : String, val yearOfBirth: Int){
   def name() = firstName + " " + lastName
+}
+
+object Director{
+  def apply(firstName: String, lastName: String, yearOfBirth: Int): Director = {
+    new Director(firstName, lastName, yearOfBirth)
+  }
+  def older(director1 : Director, director2: Director) : Director = {
+    return if (director1.yearOfBirth > director2.yearOfBirth) director2 else director1;
+  }
 }
 
 val nolan = new Director("Christopher", "Nolan", 1970)
@@ -33,7 +22,22 @@ class Film(val name : String, val yearOfRelease : Int, val imdbRating : Double, 
   }
 }
 
+object Film{
+  def apply(name : String, yearOfRelease : Int, imdbRating : Double, director : Director): Film = {
+    new Film(name, yearOfRelease, imdbRating, director)
+  }
+  def highestRating(film1: Film, film2: Film) : Film = {
+    if(film1.imdbRating > film2.imdbRating) film1 else film2
+  }
+  def oldestDirectorAtTheTime(film1: Film, film2: Film) : Director = {
+    Director.older(film1.director, film2.director)
+  }
+}
+
 val eastwood = new Director("Clint", "Eastwood", 1930)
+
+Director.older(eastwood, nolan).yearOfBirth
+
 eastwood.name()
 val mcTiernan = new Director("John", "McTiernan", 1951)
 val someBody = new Director("Just", "Some Body", 1990)
@@ -61,7 +65,3 @@ thomasCrownAffair.copy(yearOfRelease = 1968, director = new Director("Norman", "
 // returns Film("The Thomas Crown Affair", 1926, /* etc */)
 inception.copy().copy().copy().director.yearOfBirth
 // returns a new copy of `inception`
-
-class Counter(val init: Int){
-
-}
